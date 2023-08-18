@@ -1,0 +1,59 @@
+const int Trigger = A0;   //Pin digital 2 para el Trigger del sensor
+const int Echo = A1;   //Pin digital 3 para el Echo del sensor
+
+int r1=4;
+int r2=5;
+int en_r=10;
+
+int l1=6;
+int l2=7;
+int en_l=11;
+
+void setup() {
+  Serial.begin(9600);//iniciailzamos la comunicacion
+  pinMode(Trigger, OUTPUT); //pin como salida
+  pinMode(Echo, INPUT);   //pin como entrad
+   digitalWrite(Trigger, LOW);//Inicializamos el pin con 0
+pinMode(r1,OUTPUT);
+  pinMode(r2,OUTPUT);
+  pinMode(en_r,OUTPUT);
+  pinMode(l1,OUTPUT);
+  pinMode(l2,OUTPUT);
+  pinMode(en_l,OUTPUT);
+  digitalWrite(en_r,HIGH);
+  digitalWrite(en_l,HIGH);
+}
+
+void loop()
+{
+
+  long t; //timepo que demora en llegar el eco
+  long d; //distancia en centimetros
+
+  digitalWrite(Trigger, HIGH);
+  delayMicroseconds(10);          //Enviamos un pulso de 10us
+  digitalWrite(Trigger, LOW);
+  
+ t = pulseIn(Echo, HIGH); //obtenemos el ancho del pulso
+  d = t/59;             //escalamos el tiempo a una distancia en cm
+  
+  Serial.print("Distancia: ");
+  Serial.print(d);      //Enviamos serialmente el valor de la distancia
+  Serial.print("cm");
+  Serial.println();        //Hacemos una pausa de 100ms
+  
+  if(d<25)
+  {
+    digitalWrite(r1,LOW);
+    digitalWrite(r2,LOW);
+    digitalWrite(l1,LOW);
+    digitalWrite(l2,LOW);
+  }
+  else
+  {
+    digitalWrite(r1,HIGH);
+digitalWrite(r2,LOW);
+    digitalWrite(l1,HIGH);
+    digitalWrite(l2,LOW);
+    }
+}
